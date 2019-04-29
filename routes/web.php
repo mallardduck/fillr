@@ -12,5 +12,22 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return $router->app->version(); /// TODO: Add a real homepage.
+});
+
+$routeSize = "/{width:[0-9]{1,4}}/{height:[0-9]{1,4}}";
+$router->get($routeSize, function ($width, $height) use ($router) {
+    return "Regular Show Image"; /// TODO: Add a real homepage.
+});
+
+$router->get('/c' . $routeSize, function ($width, $height) use ($router) {
+    return "Crazy Show Image"; /// TODO: Add a real homepage.
+});
+
+$router->get('/g' . $routeSize, function ($width, $height) use ($router) {
+    return "Gray Show Image"; /// TODO: Add a real homepage.
+});
+
+$router->get('/gif' . $routeSize, function ($width, $height) use ($router) {
+    return "Gif Show Image"; /// TODO: Add a real homepage.
 });
