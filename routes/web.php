@@ -16,7 +16,7 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['middleware' => 'size'], function () use ($router) {
-  $routeSize = "/{width:[\-0-9]{1,5}}/{height:[\-0-9]{1,5}}";
+  $routeSize = "/{width:\-?[0-9]{1,4}}/{height:\-?[0-9]{1,4}}";
   $router->get($routeSize, function (int $width, int $height) use ($router) {
       return "Regular Show Image"; /// TODO: Add a real homepage.
   });
