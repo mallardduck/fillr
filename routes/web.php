@@ -15,7 +15,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version(); /// TODO: Add a real homepage.
 });
 
+// A reusable route dimension string
 $routeSize = "/{width:[\-0-9]{1,4}}/{height:[0-9]{1,4}}";
+//Our actual routes.
 $router->get($routeSize, function ($width, $height) use ($router) {
     return "Regular Show Image"; /// TODO: Add a real homepage.
 });
