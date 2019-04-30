@@ -30,17 +30,15 @@ class ShowImage extends Controller
      */
     public function show(int $width, int $height)
     {
-      $imagePath = $this->fillService->getGeneratedPath($width, $height);
-      dd( $imagePath );
-      return response();
+      $imagePath = $this->fillService->getImageFilename($width, $height);
       return (new Response)
             ->download(
               $imagePath,
-              "$widthx$height",
+              '',
               [
-                'Content-Disposition' => 'inline',
-                'Type' => 'image/gif',
-              ]
+                'Type' => 'image/jpeg',
+              ],
+              'inline'
             );
     }
 
@@ -50,7 +48,7 @@ class ShowImage extends Controller
      */
     public function showGif(int $width, int $height)
     {
-      $imagePath = $this->fillService->getGif($width, $height);
+      $imagePath = $this->fillService->getGifFilename($width, $height);
       return (new Response)
             ->download(
               $imagePath,
