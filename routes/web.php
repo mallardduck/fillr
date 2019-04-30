@@ -28,4 +28,5 @@ $router->group(['middleware' => 'size'], function () use ($router) {
   });
 
   $router->get('/gif' . $routeSize, 'ShowImage@showGif');
+  $router->get('/gifs' . $routeSize, 'ShowImage@showGif');
 });
