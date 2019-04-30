@@ -23,6 +23,51 @@ $app = new Laravel\Lumen\Application(
 
 // $app->withFacades();
 
+config([
+  'filesystems' => [
+    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'disks' => [
+        'local' => [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+        ],
+    ],
+  ],
+  'logging' => [
+    'default' => env('LOG_CHANNEL', 'stack'),
+        'channels' => [
+        'stack' => [
+            'driver' => 'stack',
+            'channels' => ['single'],
+        ],
+
+        'single' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/lumen.log'),
+            'level' => 'debug',
+        ],
+
+        'daily' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/lumen.log'),
+            'level' => 'debug',
+            'days' => 7,
+        ],
+
+        'syslog' => [
+            'driver' => 'syslog',
+            'level' => 'debug',
+        ],
+
+        'errorlog' => [
+            'driver' => 'errorlog',
+            'level' => 'debug',
+        ],
+    ],
+
+  ],
+]);
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -43,6 +88,34 @@ $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
+
+$app->singleton('filesystem', function ($app) {
+    return $app->loadComponent(
+        'filesystems',
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        'filesystem'
+    );
+});
+
+use App\Services\FillService\FillSet;
+use Illuminate\Support\Collection;
+
+$app->singleton('fileSets', function ($app) {
+    return collect([
+      new FillSet('fillmurray', "Fill Murray"),
+      new FillSet('placecage', "Place Cage", null, [
+        'gifs' => true,
+        'crazy' => true,
+      ]),
+      new FillSet('stevensegallery', "Stevensegallery"),
+    ]);
+});
+
+Collection::macro('getByKey', function ($searchKey) {
+    return $this->first(function ($value, $key) use ($searchKey) {
+        return $value->getKey() === $searchKey;
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
