@@ -17,19 +17,17 @@ $router->get('/', function () use ($router) {
 
 $router->group(['middleware' => 'size'], function () use ($router) {
   $routeSize = "/{width:\-?[0-9]{1,4}}/{height:\-?[0-9]{1,4}}";
-  $router->get($routeSize, function (int $width, int $height) use ($router) {
-      return "Regular Show Image"; /// TODO: Add a real homepage.
-  });
+  $router->get($routeSize, 'ShowImage@show');
 
   $router->get('/c' . $routeSize, function (int $width, int $height) use ($router) {
-      return "Crazy Show Image"; /// TODO: Add a real homepage.
+      $test = new \App\Services\FillService\FillSet('fillmurray', 'Fill Murray');
+      dd( $test->getName() );
+      return "Crazy Show Image";
   });
 
   $router->get('/g' . $routeSize, function (int $width, int $height) use ($router) {
-      return "Gray Show Image"; /// TODO: Add a real homepage.
+      return "Gray Show Image";
   });
 
-  $router->get('/gif' . $routeSize, function (int $width, int $height) use ($router) {
-      return "Gif Show Image"; /// TODO: Add a real homepage.
-  });
+  $router->get('/gif' . $routeSize, 'ShowImage@showGif');
 });
