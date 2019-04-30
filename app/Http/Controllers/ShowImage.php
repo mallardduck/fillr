@@ -46,6 +46,24 @@ class ShowImage extends Controller
      * @param  int    $width
      * @param  int    $height
      */
+    public function showGray(int $width, int $height)
+    {
+      $imagePath = $this->fillService->setType('grayscale')->getImageFilename($width, $height);
+      return (new Response)
+            ->download(
+              $imagePath,
+              '',
+              [
+                'Type' => 'image/jpeg',
+              ],
+              'inline'
+            );
+    }
+
+    /**
+     * @param  int    $width
+     * @param  int    $height
+     */
     public function showGif(int $width, int $height)
     {
       $imagePath = $this->fillService->getGifFilename($width, $height);

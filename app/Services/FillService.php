@@ -32,11 +32,13 @@ class FillService {
 
   /** @var array */
   protected static $types = [
-    'default',
-    'crazy',
-    'grayscale',
-    'gifs',
+    'default' => null,
+    'crazy' => 'crazy',
+    'grayscale' => 'grayscale',
   ];
+
+  /** @var string|void */
+  protected $currentType = null;
 
   public function __construct(Filesystem $fileSystem)
   {
@@ -61,6 +63,12 @@ class FillService {
   public function currentSet(): FillSet
   {
     return static::$fillSets->getByKey($this->currentSetKey());
+  }
+
+  public function setType(string $type): self
+  {
+      $this->currentType = static::$types[$type];
+      return $this;
   }
 
   /**
@@ -90,12 +98,14 @@ class FillService {
   public function getSourcePath(int $width, int $height, ?string $type = null, ?string $setName = null)
   {
     $dimensions = $width . 'x' . $height;
+    $type = $type ?? $this->currentType;
     $extGlob = ('gifs' === $type) ? "/{$type}/*.gif" : '/*.*';
     return $this->getSourceBase() . $extGlob;
   }
 
   public function getGeneratedPath(int $width, int $height, ?string $type = null, ?string $setName = null)
   {
+    $type = $type ?? $this->currentType;
     $typeBase = $type ? "/{$type}/" : "/";
     $dimensions = $width . 'x' . $height;
     $ext = ('gifs' === $type) ? '.gif' : '.jpeg';
@@ -140,6 +150,9 @@ class FillService {
     // Resize, Crop and Save
     $image->adaptiveResizeImage(intval($newWidth), intval($newHeight));
     $image->cropImage(intval($desiredWidth), intval($desiredHeight), intval($cropX), intval($cropY));
+    if ('grayscale' === $this->currentType) {
+      $image->setImageColorspace(\Imagick::COLORSPACE_GRAY);
+    }
     $image->writeImage($sizedFilepath);
 
     return $sizedFilepath;
