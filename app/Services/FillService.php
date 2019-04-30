@@ -21,8 +21,8 @@ class FillService {
   public static $defaultSetKey = 'fillmurray';
 
   /** @var string|void */
-  public static $currentSetKey = null;
-  //public static $currentSetKey = 'placecage';
+  //public static $currentSetKey = null;
+  public static $currentSetKey = 'placecage';
 
   /** @var \Illuminate\Filesystem\Filesystem */
   public $fileSystem;
