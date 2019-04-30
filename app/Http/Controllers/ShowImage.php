@@ -54,7 +54,7 @@ class ShowImage extends Controller
       return (new Response)
             ->download(
               $imagePath,
-              "{$width}x{$height}",
+              '',
               [
                 'Type' => 'image/gif',
               ],
