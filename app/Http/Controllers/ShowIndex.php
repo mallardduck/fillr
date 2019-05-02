@@ -22,7 +22,7 @@ class ShowIndex extends Controller
     {
       $filSet = $this->fillr->getFillSet($request->subdomain);
 
-      return $view->make('indexes.' . $indexFor, [
+      return $view->make('indexes.' . $request->subdomain, [
         'fillSet' => $filSet,
       ]);
     }
