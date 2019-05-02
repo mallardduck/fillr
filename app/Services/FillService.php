@@ -178,7 +178,12 @@ class FillService {
     $this->logger->info($hash . " Size Info: " . $sizeInfo);
 
     if ( 0 === preg_match('/\s(\d+)x(\d+)/', $sizeInfo, $matches)) {
-      throw new \Exception($hash . ' Cannot find match.');
+      if (null === $sizeInfo) {
+        throw new \Exception($hash . ' Cannot find gifsicle.');
+
+      } else {
+        throw new \Exception($hash . ' Cannot find match.');
+      }
     }
     $width = $matches[1];
     $height = $matches[2];
