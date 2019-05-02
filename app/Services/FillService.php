@@ -21,8 +21,7 @@ class FillService {
   public static $defaultSetKey = 'fillmurray';
 
   /** @var string|void */
-  //public static $currentSetKey = null;
-  public static $currentSetKey = 'placecage';
+  public $currentSetKey = null;
 
   /** @var \Illuminate\Filesystem\Filesystem */
   public $fileSystem;
@@ -54,7 +53,7 @@ class FillService {
    */
   protected function currentSetKey(): string
   {
-    return static::$currentSetKey ?? static::$defaultSetKey;
+    return $this->currentSetKey ?? static::$defaultSetKey;
   }
 
   /**
