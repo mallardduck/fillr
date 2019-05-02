@@ -11,22 +11,22 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version(); /// TODO: Add a real homepage.
-});
+$router->group(['middleware' => 'domain'], function () use ($router) {
+  $router->get('/', 'ShowIndex@index');
 
-$router->group(['middleware' => 'size'], function () use ($router) {
-  $routeSize = "/{width:\-?[0-9]{1,4}}/{height:\-?[0-9]{1,4}}";
-  $router->get($routeSize, 'ShowImage@show');
+  $router->group(['middleware' => 'size'], function () use ($router) {
+    $routeSize = "/{width:\-?[0-9]{1,4}}/{height:\-?[0-9]{1,4}}";
+    $router->get($routeSize, 'ShowImage@show');
 
-  $router->get('/g' . $routeSize, 'ShowImage@showGray');
+    $router->get('/g' . $routeSize, 'ShowImage@showGray');
 
-  $router->get('/c' . $routeSize, function (int $width, int $height) use ($router) {
-      $test = new \App\Services\FillService\FillSet('fillmurray', 'Fill Murray');
-      dd( $test->getName() );
-      return "Crazy Show Image";
+    $router->get('/c' . $routeSize, function (int $width, int $height) use ($router) {
+        $test = new \App\Services\FillService\FillSet('fillmurray', 'Fill Murray');
+        dd( $test->getName() );
+        return "Crazy Show Image";
+    });
+
+    $router->get('/gif' . $routeSize, 'ShowImage@showGif');
+    $router->get('/gifs' . $routeSize, 'ShowImage@showGif');
   });
-
-  $router->get('/gif' . $routeSize, 'ShowImage@showGif');
-  $router->get('/gifs' . $routeSize, 'ShowImage@showGif');
 });
