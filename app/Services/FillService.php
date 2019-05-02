@@ -64,6 +64,23 @@ class FillService {
     return static::$fillSets->getByKey($this->currentSetKey());
   }
 
+  /**
+   * @return FillSet
+   */
+  public function getFillSet(string $type): FillSet
+  {
+    return static::$fillSets->getByKey($type);
+  }
+
+  /**
+   * @return FillSet
+   */
+  public function setFillSet(string $type): self
+  {
+    $this->currentSetKey = $type;
+    return $this;
+  }
+
   public function setType(string $type): self
   {
       $this->currentType = static::$types[$type];
