@@ -107,7 +107,7 @@ $app->singleton('fileSets', function ($app) {
         'gifs' => true,
         'crazy' => true,
       ]),
-      new FillSet('stevensegallery', "Stevensegallery"),
+      new FillSet('stevensegallery', "Steven SeGallery"),
     ]);
 });
 
@@ -134,6 +134,7 @@ Collection::macro('getByKey', function ($searchKey) {
 
 $app->routeMiddleware([
     'size' => App\Http\Middleware\ValidateSize::class,
+    'domain' => App\Http\Middleware\SubdomainSite::class,
 ]);
 
 /*
