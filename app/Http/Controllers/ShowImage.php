@@ -68,6 +68,7 @@ class ShowImage extends Controller
      */
     public function showGif(int $width, int $height)
     {
+      $this->fillService->setFillSet( app()->subdomain );
       $imagePath = $this->fillService->getGifFilename($width, $height);
       return (new Response)
             ->download(
