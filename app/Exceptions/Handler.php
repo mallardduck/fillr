@@ -84,13 +84,15 @@ class Handler extends ExceptionHandler
             500
           ));
         } elseif ($exception instanceof UnsupportedType) {
+          $base_size = preg_replace('/^[A-Za-z]+\//', '', $request->path());
           return (new Response(
             $this->view->make(
               'error',
               [
                 'title' => 'Bad Request',
                 'fillSet' => app()->subdomain,
-                'message' => $exception->getMessage(),
+                'message' => $exception->getMessage() . ' Redirecting...',
+                'refresh' => url($base_size),
               ]
             ),
             400
