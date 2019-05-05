@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use App\Http\SizeException;
 use App\Services\FillService\ServerException;
+use App\Services\FillService\UnsupportedType;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -81,6 +82,18 @@ class Handler extends ExceptionHandler
               ]
             ),
             500
+          ));
+        } elseif ($exception instanceof UnsupportedType) {
+          return (new Response(
+            $this->view->make(
+              'error',
+              [
+                'title' => 'Bad Request',
+                'fillSet' => app()->subdomain,
+                'message' => $exception->getMessage(),
+              ]
+            ),
+            400
           ));
         }
 
