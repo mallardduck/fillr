@@ -62,6 +62,9 @@ class FillSet {
    */
   public function supports(string $type): bool
   {
+      if ('gif' === $type) {
+        $type = $type . 's';
+      }
       $prop = 'supports' . ucfirst(strtolower($type));
       return $this->{$prop};
   }
