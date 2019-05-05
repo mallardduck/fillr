@@ -19,18 +19,18 @@ class SubdomainSite
         $parts = explode(".", $request->getHost());
         $subdomain = $parts[0];
         switch ($subdomain) {
-          case 'billmurray':
-          case 'fillmurray':
-              $indexFor = 'fillmurray';
-              break;
-          case 'niccage':
-          case 'placecage':
-              $indexFor = 'placecage';
-              break;
-          case 'stevensegal':
-          case 'stevensegallery':
-              $indexFor = 'stevensegallery';
-              break;
+            case 'billmurray':
+            case 'fillmurray':
+                $indexFor = 'fillmurray';
+                break;
+            case 'niccage':
+            case 'placecage':
+                $indexFor = 'placecage';
+                break;
+            case 'stevensegal':
+            case 'stevensegallery':
+                $indexFor = 'stevensegallery';
+                break;
         }
         $request->subdomain = $indexFor;
         app()->subdomain = $indexFor;

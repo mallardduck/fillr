@@ -61,42 +61,42 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof SizeException) {
             return (new Response(
-              $this->view->make(
-                'error',
-                [
-                  'title' => 'Bad Request',
-                  'fillSet' => app()->subdomain,
-                  'message' => $exception->getMessage(),
-                ]
-              ),
-              400
+                $this->view->make(
+                    'error',
+                    [
+                    'title' => 'Bad Request',
+                    'fillSet' => app()->subdomain,
+                    'message' => $exception->getMessage(),
+                    ]
+                ),
+                400
             ));
         } elseif ($exception instanceof ServerException) {
-          return (new Response(
-            $this->view->make(
-              'error',
-              [
-                'title' => 'Server Error',
-                'fillSet' => app()->subdomain,
-                'message' => "There was an error on the server. Potentially you can try again in a few minutes and it may work. If it doesn't then it's likely it won't start working.",
-              ]
-            ),
-            500
-          ));
+            return (new Response(
+                $this->view->make(
+                    'error',
+                    [
+                    'title' => 'Server Error',
+                    'fillSet' => app()->subdomain,
+                    'message' => "There was an error on the server. Potentially you can try again in a few minutes and it may work. If it doesn't then it's likely it won't start working.",
+                    ]
+                ),
+                500
+            ));
         } elseif ($exception instanceof UnsupportedType) {
-          $base_size = preg_replace('/^[A-Za-z]+\//', '', $request->path());
-          return (new Response(
-            $this->view->make(
-              'error',
-              [
-                'title' => 'Bad Request',
-                'fillSet' => app()->subdomain,
-                'message' => $exception->getMessage() . ' Redirecting...',
-                'refresh' => url($base_size),
-              ]
-            ),
-            400
-          ));
+            $base_size = preg_replace('/^[A-Za-z]+\//', '', $request->path());
+            return (new Response(
+                $this->view->make(
+                    'error',
+                    [
+                    'title' => 'Bad Request',
+                    'fillSet' => app()->subdomain,
+                    'message' => $exception->getMessage() . ' Redirecting...',
+                    'refresh' => url($base_size),
+                    ]
+                ),
+                400
+            ));
         }
 
         return parent::render($request, $exception);
