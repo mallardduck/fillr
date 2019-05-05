@@ -37,6 +37,7 @@ class FillService {
   /** @var array */
   protected static $types = [
     'default' => null,
+    'gifs' => 'gifs',
     'crazy' => 'crazy',
     'grayscale' => 'grayscale',
   ];
@@ -110,7 +111,7 @@ class FillService {
     $setFolder = (null === $setName) ?
                     $this->currentSet()->getFolder():
                     static::$fillSets->getByKey($setName)->getFolder();
-    $setFolder = $this->currentType ?
+    $setFolder = ($this->currentType && 'grayscale' !== $this->currentType) ?
                     $setFolder . '/' . $this->currentType :
                     $setFolder;
     return static::$sourceRoot . '/' . $setFolder;
@@ -135,7 +136,7 @@ class FillService {
   public function getSourcePath(?string $type = null): string
   {
     $type = $type ?? $this->currentType;
-    $extGlob = ('gifs' === $type) ? "/{$type}/*.gif" : '/*.*';
+    $extGlob = ('gifs' === $type) ? "/*.gif" : '/*.*';
     return $this->getSourceBase() . $extGlob;
   }
 
@@ -273,9 +274,9 @@ class FillService {
    */
   public function getGifFilename(int $desiredWidth, int $desiredHeight): string
   {
-    $sizedFilepath = $this->getGeneratedPath($desiredWidth, $desiredHeight, 'gifs');
+    $sizedFilepath = $this->getGeneratedPath($desiredWidth, $desiredHeight);
     if ( $this->fileSystem->exists( $sizedFilepath ) ) {
-      return $sizedFilepath;
+        return $sizedFilepath;
     } elseif (is_null(shell_exec('gifsicle -h|head'))) {
         throw new ServerException('Gifsicle is not installed (or is not accessible) on the system.');
     }
