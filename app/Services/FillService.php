@@ -111,9 +111,12 @@ class FillService {
     return static::$generatedRoot . '/' . $setFolder;
   }
 
-  public function getSourcePath(int $width, int $height, ?string $type = null, ?string $setName = null)
+  /**
+   * @param  null|string $type
+   * @return string
+   */
+  public function getSourcePath(?string $type = null): string
   {
-    $dimensions = $width . 'x' . $height;
     $type = $type ?? $this->currentType;
     $extGlob = ('gifs' === $type) ? "/{$type}/*.gif" : '/*.*';
     return $this->getSourceBase() . $extGlob;
@@ -139,7 +142,7 @@ class FillService {
     $dimensions = $desiredWidth . 'x' . $desiredHeight;
 
     // Get a random image
-    $searchGlob = $this->getSourcePath($desiredWidth, $desiredHeight, $type);
+    $searchGlob = $this->getSourcePath($type);
     $fileName = array_rand(array_flip($this->fileSystem->glob($searchGlob)));
     $image = new \Imagick($fileName);
 
@@ -185,7 +188,7 @@ class FillService {
     $dimensions = $desiredWidth . 'x' . $desiredHeight;
 
     // Get a random image
-    $searchGlob = $this->getSourcePath($desiredWidth, $desiredHeight, 'gifs');
+    $searchGlob = $this->getSourcePath('gifs');
     $fileName = array_rand(array_flip($this->fileSystem->glob($searchGlob)));
 
     // Get the image size
