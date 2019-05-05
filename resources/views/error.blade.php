@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="theme-color" content="#ffffff">
-    <title>Bad Request | {{ $fillSet }} by LucidInternets</title>
+    <title>{{ $title ?? 'Error' }} | {{ $fillSet ??  'Filler Images' }} by LucidInternets</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The Best Motherfucking Website">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans">
@@ -32,7 +32,7 @@
 </head>
 
 <body>
-    {{ $message }}
+    {{ $message ?? 'Something went wrong with the request.' }}
 </body>
 
 </html>

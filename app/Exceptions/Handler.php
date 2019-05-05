@@ -62,6 +62,7 @@ class Handler extends ExceptionHandler
               $this->view->make(
                 'error',
                 [
+                  'title' => 'Bad Request',
                   'fillSet' => app()->subdomain,
                   'message' => $exception->getMessage(),
                 ]
