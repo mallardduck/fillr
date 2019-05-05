@@ -102,6 +102,9 @@ class FillService {
     $setFolder = (null === $setName) ?
                     $this->currentSet()->getFolder():
                     static::$fillSets->getByKey($setName)->getFolder();
+    $setFolder = $this->currentType ?
+                    $setFolder . '/' . $this->currentType :
+                    $setFolder;
     return static::$sourceRoot . '/' . $setFolder;
   }
 
