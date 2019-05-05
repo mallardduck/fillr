@@ -17,15 +17,8 @@ $router->group(['middleware' => 'domain'], function () use ($router) {
   $router->group(['middleware' => 'size'], function () use ($router) {
     $routeSize = "/{width:\-?[0-9]+}/{height:\-?[0-9]+}";
     $router->get($routeSize, 'ShowImage@show');
-
     $router->get('/g' . $routeSize, 'ShowImage@showGray');
-
-    $router->get('/c' . $routeSize, function (int $width, int $height) use ($router) {
-        $test = new \App\Services\FillService\FillSet('fillmurray', 'Fill Murray');
-        dd( $test->getName() );
-        return "Crazy Show Image";
-    });
-
+    $router->get('/c' . $routeSize, 'ShowImage@showCrazy');
     $router->get('/gif' . $routeSize, 'ShowImage@showGif');
     $router->get('/gifs' . $routeSize, 'ShowImage@showGif');
   });

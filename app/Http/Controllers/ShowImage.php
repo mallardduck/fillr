@@ -66,6 +66,25 @@ class ShowImage extends Controller
      * @param  int    $width
      * @param  int    $height
      */
+    public function showCrazy(int $width, int $height)
+    {
+      $this->fillService->setFillSet( app()->subdomain );
+      $imagePath = $this->fillService->setType('crazy')->getImageFilename($width, $height);
+      return (new Response)
+            ->download(
+              $imagePath,
+              '',
+              [
+                'Type' => 'image/jpeg',
+              ],
+              'inline'
+            );
+    }
+
+    /**
+     * @param  int    $width
+     * @param  int    $height
+     */
     public function showGif(int $width, int $height)
     {
       $this->fillService->setFillSet( app()->subdomain );
