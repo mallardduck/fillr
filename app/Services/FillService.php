@@ -65,6 +65,7 @@ class FillService {
   }
 
   /**
+   * @param  string  $type
    * @return FillSet
    */
   public function getFillSet(string $type): FillSet
@@ -73,7 +74,8 @@ class FillService {
   }
 
   /**
-   * @return FillSet
+   * @param  string $fillsetName
+   * @return self
    */
   public function setFillSet(string $fillsetName): self
   {
@@ -81,6 +83,10 @@ class FillService {
     return $this;
   }
 
+  /**
+   * @param  string $type
+   * @return self
+   */
   public function setType(string $type): self
   {
       $this->currentType = static::$types[$type];
@@ -122,6 +128,15 @@ class FillService {
     return $this->getSourceBase() . $extGlob;
   }
 
+  /**
+   * Get the image path for a generated image.
+   *
+   * @param  int          $width
+   * @param  int          $height
+   * @param  null|string  $type
+   * @param  null|string  $setName
+   * @return string
+   */
   public function getGeneratedPath(int $width, int $height, ?string $type = null, ?string $setName = null): string
   {
     $type = $type ?? $this->currentType;
@@ -131,6 +146,12 @@ class FillService {
     return $this->getGeneratedBase() . $typeBase . $dimensions . $ext;
   }
 
+  /**
+   * Get a random source image.
+   *
+   * @param  null|string $type
+   * @return string
+   */
   private function getRandomImage(?string $type = null): string
   {
       $searchGlob = $this->getSourcePath($type);
@@ -139,6 +160,15 @@ class FillService {
                 array_flip($fileOptions) // File the keys/values
               ); // Get a random entry from the list
   }
+
+  /**
+   * Prepare the Photo update geometry for the resize.
+   *
+   * @param  int   $desiredWidth
+   * @param  int   $desiredHeight
+   * @param  array $geo
+   * @return array
+   */
   private function prepateGeometry(int $desiredWidth, int $desiredHeight, array $geo): array
   {
       list($width, $height) = array_values($geo);
@@ -162,6 +192,15 @@ class FillService {
         'cropY'     => $cropY,
       ];
   }
+
+  /**
+   * Get a sized Image's filename - either by existing or newly generated.
+   *
+   * @param  int          $desiredWidth
+   * @param  int          $desiredHeight
+   * @param  null|string  $type
+   * @return string
+   */
   public function getImageFilename(int $desiredWidth, int $desiredHeight, ?string $type = null): string
   {
     $sizedFilepath = $this->getGeneratedPath($desiredWidth, $desiredHeight, $type);
@@ -195,6 +234,12 @@ class FillService {
     return $sizedFilepath;
   }
 
+  /**
+   * Get the geometry of a Gif - mimicks how Imagick works.
+   *
+   * @param  string $fileName
+   * @return array
+   */
   private function getGifGeometry(string $fileName): array
   {
     $sizeInfo = shell_exec("gifsicle --sinfo {$fileName} | grep 'logical screen'");
@@ -207,6 +252,14 @@ class FillService {
       'height' => $matches[2],
     ];
   }
+
+  /**
+   * Get a sized Gif's filename - either by existing or newly generated.
+   *
+   * @param  int    $desiredWidth
+   * @param  int    $desiredHeight
+   * @return string
+   */
   public function getGifFilename(int $desiredWidth, int $desiredHeight): string
   {
     $sizedFilepath = $this->getGeneratedPath($desiredWidth, $desiredHeight, 'gifs');
