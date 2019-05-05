@@ -75,9 +75,9 @@ class FillService {
   /**
    * @return FillSet
    */
-  public function setFillSet(string $type): self
+  public function setFillSet(string $fillsetName): self
   {
-    $this->currentSetKey = $type;
+    $this->currentSetKey = $fillsetName;
     return $this;
   }
 
@@ -122,7 +122,7 @@ class FillService {
     return $this->getSourceBase() . $extGlob;
   }
 
-  public function getGeneratedPath(int $width, int $height, ?string $type = null, ?string $setName = null)
+  public function getGeneratedPath(int $width, int $height, ?string $type = null, ?string $setName = null): string
   {
     $type = $type ?? $this->currentType;
     $typeBase = $type ? "/{$type}/" : "/";
@@ -131,40 +131,58 @@ class FillService {
     return $this->getGeneratedBase() . $typeBase . $dimensions . $ext;
   }
 
-  public function getImageFilename(int $desiredWidth, int $desiredHeight, ?string $type = null)
+  private function getRandomImage(?string $type = null): string
+  {
+      $searchGlob = $this->getSourcePath($type);
+      $fileOptions = $this->fileSystem->glob($searchGlob);
+      return array_rand(
+                array_flip($fileOptions) // File the keys/values
+              ); // Get a random entry from the list
+  }
+  private function prepateGeometry(int $desiredWidth, int $desiredHeight, array $geo): array
+  {
+      list($width, $height) = array_values($geo);
+      $widthRatio = $width / $desiredWidth;
+      $heightRatio = $height / $desiredHeight;
+
+      $newWidth = $desiredWidth;
+      $newHeight = $desiredHeight;
+      if ($heightRatio <= $widthRatio) {
+        $newWidth = $width / $heightRatio;
+      } else {
+        $newHeight = $height / $widthRatio;
+      }
+
+      $cropX = ($newWidth - $desiredWidth) / 2;
+      $cropY = ($newHeight - $desiredHeight) / 2;
+      return [
+        'newWidth'  => $newWidth,
+        'newHeight' => $newHeight,
+        'cropX'     => $cropX,
+        'cropY'     => $cropY,
+      ];
+  }
+  public function getImageFilename(int $desiredWidth, int $desiredHeight, ?string $type = null): string
   {
     $sizedFilepath = $this->getGeneratedPath($desiredWidth, $desiredHeight, $type);
     if ( $this->fileSystem->exists( $sizedFilepath ) ) {
       return $sizedFilepath;
+    } elseif (!extension_loaded('Imagick')) {
+        throw new \Exception('Make a new exception later.....');
     }
 
     $hash = "[" . substr(md5(time()), 9, 7) . "]";
     $dimensions = $desiredWidth . 'x' . $desiredHeight;
 
     // Get a random image
-    $searchGlob = $this->getSourcePath($type);
-    $fileName = array_rand(array_flip($this->fileSystem->glob($searchGlob)));
+    $fileName = $this->getRandomImage($type);
+    $this->logger->info($hash . " Getting info for " . $fileName);
     $image = new \Imagick($fileName);
 
     // Get the image size
-    $this->logger->info($hash . " Getting info for " . $fileName);
     $geometry = $image->getImageGeometry();
     $this->logger->info($hash . " Size Info: " . implode('x',$geometry));
-
-    list($width, $height) = array_values($geometry);
-    $widthRatio = $width / $desiredWidth;
-    $heightRatio = $height / $desiredHeight;
-
-    $newWidth = $desiredWidth;
-    $newHeight = $desiredHeight;
-    if ($heightRatio <= $widthRatio) {
-      $newWidth = $width / $heightRatio;
-    } else {
-      $newHeight = $height / $widthRatio;
-    }
-
-    $cropX = ($newWidth - $desiredWidth) / 2;
-    $cropY = ($newHeight - $desiredHeight) / 2;
+    extract($this->prepateGeometry($desiredWidth, $desiredHeight, $geometry));
 
     // Resize, Crop and Save
     $image->adaptiveResizeImage(intval($newWidth), intval($newHeight));
@@ -177,48 +195,38 @@ class FillService {
     return $sizedFilepath;
   }
 
-  public function getGifFilename(int $desiredWidth, int $desiredHeight)
+  private function getGifGeometry(string $fileName): array
+  {
+    $sizeInfo = shell_exec("gifsicle --sinfo {$fileName} | grep 'logical screen'");
+    if ( 0 === preg_match('/(\d+)x(\d+)/', $sizeInfo, $matches)) {
+      throw new \Exception($hash . ' Cannot find match.');
+    }
+
+    return [
+      'width' => $matches[1],
+      'height' => $matches[2],
+    ];
+  }
+  public function getGifFilename(int $desiredWidth, int $desiredHeight): string
   {
     $sizedFilepath = $this->getGeneratedPath($desiredWidth, $desiredHeight, 'gifs');
     if ( $this->fileSystem->exists( $sizedFilepath ) ) {
       return $sizedFilepath;
+    } elseif (is_null(shell_exec('gifsicle -h|head'))) {
+        throw new \Exception('Make a new exception later.....');
     }
 
     $hash = "[" . substr(md5(time()), 9, 7) . "]";
     $dimensions = $desiredWidth . 'x' . $desiredHeight;
 
     // Get a random image
-    $searchGlob = $this->getSourcePath('gifs');
-    $fileName = array_rand(array_flip($this->fileSystem->glob($searchGlob)));
+    $fileName = $this->getRandomImage('gifs');
+    $this->logger->info($hash . " Getting info for " . $fileName);
 
     // Get the image size
-    $this->logger->info($hash . " Getting info for " . $fileName);
-    $sizeInfo = shell_exec("gifsicle --sinfo {$fileName} | grep 'logical screen'");
-    $this->logger->info($hash . " Size Info: " . $sizeInfo);
-
-    if ( 0 === preg_match('/\s(\d+)x(\d+)/', $sizeInfo, $matches)) {
-      if (null === $sizeInfo) {
-        throw new \Exception($hash . ' Cannot find gifsicle.');
-
-      } else {
-        throw new \Exception($hash . ' Cannot find match.');
-      }
-    }
-    $width = $matches[1];
-    $height = $matches[2];
-    $widthRatio = $width / $desiredWidth;
-    $heightRatio = $height / $desiredHeight;
-
-    $newWidth = $desiredWidth;
-    $newHeight = $desiredHeight;
-    if ($heightRatio <= $widthRatio) {
-      $newWidth = $width / $heightRatio;
-    } else {
-      $newHeight = $height / $widthRatio;
-    }
-
-    $cropX = ($newWidth - $desiredWidth) / 2;
-    $cropY = ($newHeight - $desiredHeight) / 2;
+    $geometry = $this->getGifGeometry( $fileName );
+    $this->logger->info($hash . " Size Info: " . implode('x',$geometry));
+    extract($this->prepateGeometry($desiredWidth, $desiredHeight, $geometry));
 
     // Resize, Crop and Save
     $convertResults = shell_exec("gifsicle {$fileName} --resize " . intval($newWidth) . "x" . intval($newHeight) . " | gifsicle --crop " . intval($cropX) . "," . intval($cropY) . "+{$dimensions} --output {$sizedFilepath}");
