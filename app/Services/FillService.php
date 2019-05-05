@@ -9,6 +9,9 @@ use Illuminate\Log\LogManager as Log;
 class FillService {
 
   /** @var string */
+  protected static $hash;
+
+  /** @var string */
   protected static $sourceRoot;
 
   /** @var string */
@@ -213,17 +216,17 @@ class FillService {
         throw new \Exception('Make a new exception later.....');
     }
 
-    $hash = "[" . substr(md5(time()), 9, 7) . "]";
+    $this->hash = "[" . substr(md5(time()), 9, 7) . "]";
     $dimensions = $desiredWidth . 'x' . $desiredHeight;
 
     // Get a random image
     $fileName = $this->getRandomImage($type);
-    $this->logger->info($hash . " Getting info for " . $fileName);
+    $this->logger->info($this->hash . " Getting info for " . $fileName);
     $image = new \Imagick($fileName);
 
     // Get the image size
     $geometry = $image->getImageGeometry();
-    $this->logger->info($hash . " Size Info: " . implode('x',$geometry));
+    $this->logger->info($this->hash . " Size Info: " . implode('x',$geometry));
     extract($this->prepateGeometry($desiredWidth, $desiredHeight, $geometry));
 
     // Resize, Crop and Save
@@ -247,7 +250,7 @@ class FillService {
   {
     $sizeInfo = shell_exec("gifsicle --sinfo {$fileName} | grep 'logical screen'");
     if ( 0 === preg_match('/(\d+)x(\d+)/', $sizeInfo, $matches)) {
-      throw new \Exception($hash . ' Cannot find match.');
+      throw new \Exception($this->hash . ' Cannot find match.');
     }
 
     return [
@@ -272,16 +275,16 @@ class FillService {
         throw new \Exception('Make a new exception later.....');
     }
 
-    $hash = "[" . substr(md5(time()), 9, 7) . "]";
+    $this->hash = "[" . substr(md5(time()), 9, 7) . "]";
     $dimensions = $desiredWidth . 'x' . $desiredHeight;
 
     // Get a random image
     $fileName = $this->getRandomImage('gifs');
-    $this->logger->info($hash . " Getting info for " . $fileName);
+    $this->logger->info($this->hash . " Getting info for " . $fileName);
 
     // Get the image size
     $geometry = $this->getGifGeometry( $fileName );
-    $this->logger->info($hash . " Size Info: " . implode('x',$geometry));
+    $this->logger->info($this->hash . " Size Info: " . implode('x',$geometry));
     extract($this->prepateGeometry($desiredWidth, $desiredHeight, $geometry));
 
     // Resize, Crop and Save
