@@ -56,4 +56,14 @@ class FillSet {
       throw new Error('Call to undefined method ' . static::class . '::' . $method . '()');
   }
 
+  /**
+   * @param  string $type
+   * @return bool
+   */
+  public function supports(string $type): bool
+  {
+      $prop = 'supports' . ucfirst(strtolower($type));
+      return $this->{$prop};
+  }
+
 }
