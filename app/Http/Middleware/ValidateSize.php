@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Http\SizeException;
 use Illuminate\Http\Request;
 
 class ValidateSize
@@ -19,10 +20,10 @@ class ValidateSize
         $routeWidth = $request->route('width');
         $routeHeight = $request->route('height');
         if ($routeWidth < 1 || $routeHeight < 1) {
-          throw new \Exception("Size inputs must be greater than one.");
+          throw new SizeException("Size inputs must be greater than one.");
         }
         if ($routeWidth > 3500 || $routeHeight > 3500) {
-          throw new \Exception("Size inputs cannot be larger than 3500.");
+          throw new SizeException("Size inputs cannot be larger than 3500.");
         }
 
         return $next($request);

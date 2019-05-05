@@ -3,14 +3,26 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Http\SizeException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Contracts\View\Factory as View;
+use Illuminate\Http\Response;
 
 class Handler extends ExceptionHandler
 {
+
+    /**
+     * @param View $view
+     */
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -45,6 +57,19 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof SizeException) {
+            return (new Response(
+              $this->view->make(
+                'error',
+                [
+                  'fillSet' => app()->subdomain,
+                  'message' => $exception->getMessage(),
+                ]
+              ),
+              400
+            ));
+        }
+
         return parent::render($request, $exception);
     }
 }
