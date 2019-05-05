@@ -6,6 +6,7 @@ use App\Services\FillService\FillSet;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Log\LogManager as Log;
 use App\Services\FillService\ServerException;
+use App\Services\FillService\UnsupportedType;
 
 class FillService {
 
@@ -93,6 +94,9 @@ class FillService {
    */
   public function setType(string $type): self
   {
+      if (!$this->currentSet()->supports($type)) {
+        throw new UnsupportedType('The current fill set does not support the '. $type . ' type.');
+      }
       $this->currentType = static::$types[$type];
       return $this;
   }
