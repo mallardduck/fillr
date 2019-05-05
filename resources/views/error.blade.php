@@ -32,7 +32,8 @@
 </head>
 
 <body>
-    {{ $message ?? 'Something went wrong with the request.' }}
+    <h1>{{ $title }}</h1>
+    <p>{!! $message ?? 'Something went wrong with the request.' !!}</p>
 </body>
 
 </html>
