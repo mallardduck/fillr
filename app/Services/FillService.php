@@ -10,7 +10,7 @@ use App\Services\FillService\ServerException;
 class FillService {
 
   /** @var string */
-  protected static $hash;
+  protected $hash;
 
   /** @var string */
   protected static $sourceRoot;
