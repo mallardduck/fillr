@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Services\FillService\FillSet;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Log\LogManager as Log;
+use App\Services\FillService\ServerException;
 
 class FillService {
 
@@ -213,7 +214,7 @@ class FillService {
     if ( $this->fileSystem->exists( $sizedFilepath ) ) {
       return $sizedFilepath;
     } elseif (!extension_loaded('Imagick')) {
-        throw new \Exception('Make a new exception later.....');
+        throw new ServerException('The PHP Imagick extension is not installed (or active) on this system.');
     }
 
     $this->hash = "[" . substr(md5(time()), 9, 7) . "]";
@@ -250,7 +251,7 @@ class FillService {
   {
     $sizeInfo = shell_exec("gifsicle --sinfo {$fileName} | grep 'logical screen'");
     if ( 0 === preg_match('/(\d+)x(\d+)/', $sizeInfo, $matches)) {
-      throw new \Exception($this->hash . ' Cannot find match.');
+      throw new ServerException($this->hash . ' Cannot find match.');
     }
 
     return [
@@ -272,7 +273,7 @@ class FillService {
     if ( $this->fileSystem->exists( $sizedFilepath ) ) {
       return $sizedFilepath;
     } elseif (is_null(shell_exec('gifsicle -h|head'))) {
-        throw new \Exception('Make a new exception later.....');
+        throw new ServerException('Gifsicle is not installed (or is not accessible) on the system.');
     }
 
     $this->hash = "[" . substr(md5(time()), 9, 7) . "]";
