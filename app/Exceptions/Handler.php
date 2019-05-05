@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Http\SizeException;
+use App\Services\FillService\ServerException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -69,6 +70,18 @@ class Handler extends ExceptionHandler
               ),
               400
             ));
+        } elseif ($exception instanceof ServerException) {
+          return (new Response(
+            $this->view->make(
+              'error',
+              [
+                'title' => 'Server Error',
+                'fillSet' => app()->subdomain,
+                'message' => "There was an error on the server. Potentially you can try again in a few minutes and it may work. If it doesn't then it's likely it won't start working.",
+              ]
+            ),
+            500
+          ));
         }
 
         return parent::render($request, $exception);
