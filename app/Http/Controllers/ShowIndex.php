@@ -8,9 +8,16 @@ use Illuminate\Contracts\View\Factory as View;
 
 class ShowIndex extends Controller
 {
+
+    /**
+     * @var FillService
+     */
+    protected $fillr;
+
     /**
      * Create a new controller instance.
      *
+     * @param FillService $fillr
      * @return void
      */
     public function __construct(FillService $fillr)
@@ -18,6 +25,11 @@ class ShowIndex extends Controller
         $this->fillr = $fillr;
     }
 
+    /**
+     * @param  Request $request
+     * @param  View    $view
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index(Request $request, View $view)
     {
         $filSet = $this->fillr->getFillSet($request->subdomain);
