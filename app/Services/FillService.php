@@ -221,6 +221,8 @@ class FillService
             return $sizedFilepath;
         } elseif (!extension_loaded('Imagick')) {
             throw new ServerException('The PHP Imagick extension is not installed (or active) on this system.');
+        } elseif (count(\Imagick::queryFormats('*')) === 0) {
+            throw new ServerException('The PHP Imagick extension cannot access file formats.');
         }
 
         $this->hash = "[" . substr(md5(time()), 9, 7) . "]";
