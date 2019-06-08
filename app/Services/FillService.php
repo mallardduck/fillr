@@ -182,7 +182,7 @@ class FillService
    * @param  array $geo
    * @return array
    */
-    private function prepateGeometry(int $desiredWidth, int $desiredHeight, array $geo): array
+    private function prepareGeometry(int $desiredWidth, int $desiredHeight, array $geo): array
     {
         list($width, $height) = array_values($geo);
         $widthRatio = $width / $desiredWidth;
@@ -199,10 +199,10 @@ class FillService
         $cropX = ($newWidth - $desiredWidth) / 2;
         $cropY = ($newHeight - $desiredHeight) / 2;
         return [
-        'newWidth'  => $newWidth,
-        'newHeight' => $newHeight,
-        'cropX'     => $cropX,
-        'cropY'     => $cropY,
+          $newWidth,
+          $newHeight,
+          $cropX,
+          $cropY,
         ];
     }
 
@@ -234,7 +234,7 @@ class FillService
       // Get the image size
         $geometry = $image->getImageGeometry();
         $this->logger->info($this->hash . " Size Info: " . implode('x', $geometry));
-        extract($this->prepateGeometry($desiredWidth, $desiredHeight, $geometry));
+        list($newWidth, $newHeight, $cropX, $cropY) = $this->prepareGeometry($desiredWidth, $desiredHeight, $geometry);
 
       // Resize, Crop and Save
         $image->adaptiveResizeImage(intval($newWidth), intval($newHeight));
@@ -292,7 +292,7 @@ class FillService
       // Get the image size
         $geometry = $this->getGifGeometry($fileName);
         $this->logger->info($this->hash . " Size Info: " . implode('x', $geometry));
-        extract($this->prepateGeometry($desiredWidth, $desiredHeight, $geometry));
+        list($newWidth, $newHeight, $cropX, $cropY) = $this->prepareGeometry($desiredWidth, $desiredHeight, $geometry);
 
       // Resize, Crop and Save
         $convertResults = shell_exec("gifsicle {$fileName} --resize " . intval($newWidth) . "x" . intval($newHeight) . " | gifsicle --crop " . intval($cropX) . "," . intval($cropY) . "+{$dimensions} --output {$sizedFilepath}");
