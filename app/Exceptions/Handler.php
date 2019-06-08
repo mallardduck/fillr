@@ -18,6 +18,11 @@ class Handler extends ExceptionHandler
 {
 
     /**
+     * @var View
+     */
+    private $view;
+
+    /**
      * @param View $view
      */
     public function __construct(View $view)
