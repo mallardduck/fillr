@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Services\FillService;
 use Laravel\Lumen\Http\ResponseFactory as Response;
 
@@ -25,12 +26,13 @@ class ShowImage extends Controller
     }
 
     /**
+     * @param  Request $request
      * @param  int    $width
      * @param  int    $height
      */
-    public function show(int $width, int $height)
+    public function show(Request $request, int $width, int $height)
     {
-        $this->fillService->setFillSettings(app()->subdomain);
+        $this->fillService->setFillSettings($request->subdomain->getIndex());
         $imagePath = $this->fillService->getImageFilename($width, $height);
         return (new Response())
             ->download(
@@ -47,9 +49,9 @@ class ShowImage extends Controller
      * @param  int    $width
      * @param  int    $height
      */
-    public function showGray(int $width, int $height)
+    public function showGray(Request $request, int $width, int $height)
     {
-        $this->fillService->setFillSettings(app()->subdomain);
+        $this->fillService->setFillSettings($request->subdomain->getIndex());
         $imagePath = $this->fillService->setType('grayscale')->getImageFilename($width, $height);
         return (new Response())
             ->download(
@@ -66,9 +68,9 @@ class ShowImage extends Controller
      * @param  int    $width
      * @param  int    $height
      */
-    public function showCrazy(int $width, int $height)
+    public function showCrazy(Request $request, int $width, int $height)
     {
-        $this->fillService->setFillSettings(app()->subdomain);
+        $this->fillService->setFillSettings($request->subdomain->getIndex());
         $imagePath = $this->fillService->setType('crazy')->getImageFilename($width, $height);
         return (new Response())
             ->download(
@@ -85,9 +87,9 @@ class ShowImage extends Controller
      * @param  int    $width
      * @param  int    $height
      */
-    public function showGif(int $width, int $height)
+    public function showGif(Request $request, int $width, int $height)
     {
-        $this->fillService->setFillSettings(app()->subdomain);
+        $this->fillService->setFillSettings($request->subdomain->getIndex());
         $imagePath = $this->fillService->setType('gifs')->getGifFilename($width, $height);
         return (new Response())
             ->download(

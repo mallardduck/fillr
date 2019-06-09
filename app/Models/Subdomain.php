@@ -124,4 +124,14 @@ class Subdomain
     {
         return $this->getAllSubdomains()->search($subdomain, true) !== false;
     }
+
+    /**
+     * A proxy method to get the FillSettings Primay Key.
+     *
+     * @return string The primay app index for this subdomain.
+     */
+    public function getIndex(): string
+    {
+        return $this->fillSettings->getKey();
+    }
 }
