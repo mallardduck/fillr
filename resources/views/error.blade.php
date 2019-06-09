@@ -23,11 +23,25 @@
           font-family: Open Sans,Arial;
           color: #050505;
           font-size: 16px;
-          margin: 2em auto;
-          max-width: 800px;
-          padding: 1em;
+          margin: 0;
           line-height: 1.4;
           text-align: justify;
+          display: flex;
+          min-height: 100vh;
+          flex-direction: column;
+      }
+      body > main {
+        flex: 1 1 auto;
+        margin: 2em auto;
+        width: 100%;
+        max-width: 800px;
+        padding: 1em;
+      }
+      body > footer {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1rem;
       }
       @media screen and (max-width:500px) {
           body {
@@ -38,8 +52,28 @@
 </head>
 
 <body>
-    <h1>{{ $title }}</h1>
-    <p>{!! $message ?? 'Something went wrong with the request.' !!}</p>
+    <main>
+      <h1>{{ $title }}</h1>
+      <p>{!! $message ?? 'Something went wrong with the request.' !!}</p>
+    </main>
+
+    <footer class="container">
+      <div class="row">
+        <span class="by-line">By <a href="https://github.com/mallardduck" target="_blank">mallardduck</a>.</span>
+        @if (isset($sites))
+         |
+        <span>
+          Check out the Filler Image sites:
+          @foreach ($sites as $site)
+            @php
+              list($name, $url) = $site;
+            @endphp
+            <a href="{{ $url }}">{{ $name }}</a>
+          @endforeach
+        </span>
+        @endif
+      </div>
+    </footer>
 </body>
 
 </html>

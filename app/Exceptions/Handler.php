@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Services\SubdomainService;
 use App\Exceptions\SizeException;
 use App\Exceptions\SubdomainException;
 use App\Services\FillService\ServerException;
@@ -24,11 +25,18 @@ class Handler extends ExceptionHandler
     private $view;
 
     /**
-     * @param View $view
+     * @var SubdomainService
      */
-    public function __construct(View $view)
+    private $subdomainService;
+
+    /**
+     * @param View             $view
+     * @param SubdomainService $subdomainService
+     */
+    public function __construct(View $view, SubdomainService $subdomainService)
     {
         $this->view = $view;
+        $this->subdomainService = $subdomainService;
     }
 
     /**
@@ -72,6 +80,7 @@ class Handler extends ExceptionHandler
                     [
                       'title'     => 'Bad Request',
                       'message'   => $exception->getMessage(),
+                      'sites'     => $this->subdomainService->findSisterSites(''),
                     ]
                 ),
                 400
