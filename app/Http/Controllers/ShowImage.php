@@ -30,7 +30,7 @@ class ShowImage extends Controller
      */
     public function show(int $width, int $height)
     {
-        $this->fillService->setFillSet(app()->subdomain);
+        $this->fillService->setFillSettings(app()->subdomain);
         $imagePath = $this->fillService->getImageFilename($width, $height);
         return (new Response())
             ->download(
@@ -49,7 +49,7 @@ class ShowImage extends Controller
      */
     public function showGray(int $width, int $height)
     {
-        $this->fillService->setFillSet(app()->subdomain);
+        $this->fillService->setFillSettings(app()->subdomain);
         $imagePath = $this->fillService->setType('grayscale')->getImageFilename($width, $height);
         return (new Response())
             ->download(
@@ -68,7 +68,7 @@ class ShowImage extends Controller
      */
     public function showCrazy(int $width, int $height)
     {
-        $this->fillService->setFillSet(app()->subdomain);
+        $this->fillService->setFillSettings(app()->subdomain);
         $imagePath = $this->fillService->setType('crazy')->getImageFilename($width, $height);
         return (new Response())
             ->download(
@@ -87,7 +87,7 @@ class ShowImage extends Controller
      */
     public function showGif(int $width, int $height)
     {
-        $this->fillService->setFillSet(app()->subdomain);
+        $this->fillService->setFillSettings(app()->subdomain);
         $imagePath = $this->fillService->setType('gifs')->getGifFilename($width, $height);
         return (new Response())
             ->download(

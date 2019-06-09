@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Services\FillService\FillSet;
+use App\Models\FillSettings;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Log\LogManager as Log;
 use App\Services\FillService\ServerException;
@@ -19,9 +19,6 @@ class FillService
 
   /** @var string */
     protected static $generatedRoot;
-
-  /** @var array */
-    protected static $fillSets;
 
   /** @var string */
     public static $defaultSetKey = 'fillmurray';
@@ -50,7 +47,6 @@ class FillService
     {
         static::$sourceRoot = storage_path('app/images/source');
         static::$generatedRoot = storage_path('app/images/generated');
-        static::$fillSets = app('fileSets');
         $this->fileSystem = $fileSystem;
         $this->logger = new Log(app());
     }
@@ -64,27 +60,27 @@ class FillService
     }
 
   /**
-   * @return FillSet
+   * @return FillSettings
    */
-    public function currentSet(): FillSet
+    public function currentSet(): FillSettings
     {
-        return static::$fillSets->getByKey($this->currentSetKey());
+        return $this->getFillSettings($this->currentSetKey);
     }
 
   /**
    * @param  string  $type
-   * @return FillSet
+   * @return FillSettings
    */
-    public function getFillSet(string $type): FillSet
+    public function getFillSettings(string $type): FillSettings
     {
-        return static::$fillSets->getByKey($type);
+        return app(SubdomainService::class)->getSubdomainBySetKey($type)->getFillSettings();
     }
 
   /**
    * @param  string $fillsetName
    * @return self
    */
-    public function setFillSet(string $fillsetName): self
+    public function setFillSettings(string $fillsetName): self
     {
         $this->currentSetKey = $fillsetName;
         return $this;
@@ -111,7 +107,7 @@ class FillService
     {
         $setFolder = (null === $setName) ?
                     $this->currentSet()->getFolder() :
-                    static::$fillSets->getByKey($setName)->getFolder();
+                    $this->getFillSettings($setName)->getFolder();
         $setFolder = ($this->currentType && 'grayscale' !== $this->currentType) ?
                     $setFolder . '/' . $this->currentType :
                     $setFolder;
@@ -126,7 +122,7 @@ class FillService
     {
         $setFolder = (null === $setName) ?
                     $this->currentSet()->getFolder() :
-                    static::$fillSets->getByKey($setName)->getFolder();
+                    $this->getFillSettings($setName)->getFolder();
         return static::$generatedRoot . '/' . $setFolder;
     }
 

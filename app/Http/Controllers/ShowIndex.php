@@ -32,7 +32,7 @@ class ShowIndex extends Controller
      */
     public function index(Request $request, View $view)
     {
-        $filSet = $this->fillr->getFillSet($request->subdomain);
+        $filSet = $this->fillr->getFillSettings($request->subdomain);
 
         return $view->make('indexes.' . $request->subdomain, [
         'fillSet' => $filSet,

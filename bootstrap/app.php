@@ -97,19 +97,6 @@ $app->singleton('filesystem', function ($app) {
     );
 });
 
-use App\Services\FillService\FillSet;
-
-$app->singleton('fileSets', function ($app) {
-    return collect([
-      new FillSet('fillmurray', "Fill Murray"),
-      new FillSet('placecage', "Place Cage", null, [
-        'gifs' => true,
-        'crazy' => true,
-      ]),
-      new FillSet('stevensegallery', "Steven SeGallery"),
-    ]);
-});
-
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -144,6 +131,7 @@ $app->routeMiddleware([
 $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\SubdomainServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

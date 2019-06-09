@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\FillService;
+namespace App\Models;
 
 use \Error;
 
-class FillSet
+class FillSettings
 {
 
   /** @var bool */
