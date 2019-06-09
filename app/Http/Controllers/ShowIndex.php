@@ -16,8 +16,9 @@ class ShowIndex extends Controller
     public function __invoke(Request $request, View $view)
     {
         return $view->make('indexes.' . $request->subdomain->getIndex(), [
-          'subdomain' => $request->subdomain,
-          'fillSet' => $request->subdomain->getFillSettings(),
+          'subdomain'   => $request->subdomain,
+          'fillSet'     => $request->subdomain->getFillSettings(),
+          'sisterSites' => $request->sisterSites,
         ]);
     }
 }
