@@ -61,7 +61,7 @@ class Subdomain
      *
      * @return self
      */
-    public function setPrimarySubdomain($primarySubdomain)
+    public function setPrimarySubdomain($primarySubdomain): self
     {
         $this->primarySubdomain = $primarySubdomain;
         return $this;
@@ -84,7 +84,7 @@ class Subdomain
      *
      * @return self
      */
-    public function setSubdomainAliases($subdomainAliases)
+    public function setSubdomainAliases($subdomainAliases): self
     {
         $this->subdomainAliases = $subdomainAliases;
         return $this;
@@ -117,7 +117,7 @@ class Subdomain
      *
      * @return self
      */
-    public function setFillSettings($fillSettings)
+    public function setFillSettings($fillSettings): self
     {
         $this->fillSettings = $fillSettings;
         return $this;
