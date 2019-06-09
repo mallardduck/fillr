@@ -98,7 +98,6 @@ $app->singleton('filesystem', function ($app) {
 });
 
 use App\Services\FillService\FillSet;
-use Illuminate\Support\Collection;
 
 $app->singleton('fileSets', function ($app) {
     return collect([
@@ -109,12 +108,6 @@ $app->singleton('fileSets', function ($app) {
       ]),
       new FillSet('stevensegallery', "Steven SeGallery"),
     ]);
-});
-
-Collection::macro('getByKey', function ($searchKey) {
-    return $this->first(function ($value, $key) use ($searchKey) {
-        return $value->getKey() === $searchKey;
-    });
 });
 
 /*
@@ -148,7 +141,7 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
