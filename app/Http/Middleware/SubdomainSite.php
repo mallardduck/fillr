@@ -18,23 +18,31 @@ class SubdomainSite
     {
         $parts = explode(".", $request->getHost());
         $subdomain = $parts[0];
-        switch ($subdomain) {
-            case 'billmurray':
-            case 'fillmurray':
-                $indexFor = 'fillmurray';
-                break;
-            case 'niccage':
-            case 'placecage':
-                $indexFor = 'placecage';
-                break;
-            case 'stevensegal':
-            case 'stevensegallery':
-                $indexFor = 'stevensegallery';
-                break;
-        }
-        $request->subdomain = $indexFor;
-        app()->subdomain = $indexFor;
+
+        app()->subdomain = $request->subdomain = $this->indexFromSubdomain($subdomain);
 
         return $next($request);
+    }
+
+    /**
+     * @param  string $subdomain
+     * @return string
+     */
+    private function indexFromSubdomain(string $subdomain): string
+    {
+      switch ($subdomain) {
+          case 'billmurray':
+          case 'fillmurray':
+              return 'fillmurray';
+              break;
+          case 'niccage':
+          case 'placecage':
+              return 'placecage';
+              break;
+          case 'stevensegal':
+          case 'stevensegallery':
+              return 'stevensegallery';
+              break;
+      }
     }
 }
