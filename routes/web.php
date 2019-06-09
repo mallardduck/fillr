@@ -12,7 +12,7 @@
 */
 
 $router->group(['middleware' => 'domain'], function () use ($router) {
-  $router->get('/', 'ShowIndex@index');
+  $router->get('/', 'ShowIndex');
 
   $router->group(['middleware' => 'size'], function () use ($router) {
     $routeSize = "/{width:\-?[0-9]+}/{height:\-?[0-9]+}";

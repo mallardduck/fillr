@@ -30,7 +30,7 @@ class ShowIndex extends Controller
      * @param  View    $view
      * @return \Illuminate\Contracts\View\View
      */
-    public function index(Request $request, View $view)
+    public function __invoke(Request $request, View $view)
     {
         $filSet = $this->fillr->getFillSettings($request->subdomain);
 
