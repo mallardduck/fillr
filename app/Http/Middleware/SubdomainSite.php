@@ -33,7 +33,8 @@ class SubdomainSite
         $parts = explode(".", $request->getHost());
         $subdomain = $parts[0];
 
-        $request->subdomain = $this->subdomainService->findSubdomain($subdomain);
+        $request->subdomain   = $this->subdomainService->findSubdomain($subdomain);
+        $request->sisterSites = $this->subdomainService->findSisterSites($subdomain);
 
         return $next($request);
     }
