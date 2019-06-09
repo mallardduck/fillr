@@ -19,31 +19,34 @@ class SubdomainService
     {
         static::$subdomains = collect([
           new Subdomain(
+            'Fill Murray',
             'fillmurray',
             [
               'bill',
               'billmurray',
             ],
-            new FillSettings('fillmurray', "Fill Murray"),
+            new FillSettings('fillmurray'),
           ),
           new Subdomain(
+            'Place Cage',
             'placecage',
             [
               'nic',
               'niccage',
             ],
-            new FillSettings('placecage', "Place Cage", null, [
+            new FillSettings('placecage', null, [
               'gifs' => true,
               'crazy' => true,
             ]),
           ),
           new Subdomain(
+            'Steven SeGallery',
             'stevensegallery',
             [
               'segal',
               'stevensegal',
             ],
-            new FillSettings('stevensegallery', "Steven SeGallery"),
+            new FillSettings('stevensegallery'),
           ),
         ]);
     }

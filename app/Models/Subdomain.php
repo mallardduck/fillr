@@ -4,6 +4,10 @@ namespace App\Models;
 
 class Subdomain
 {
+
+    /** @var string */
+    protected $name;
+
     /** @var string */
     protected $primarySubdomain;
 
@@ -14,25 +18,40 @@ class Subdomain
     protected $fillSettings;
 
     /**
+     * @param string       $name
      * @param string       $subdomain
      * @param array        $aliases
      * @param FillSettings|null $fillSettings
      */
-    public function __construct(string $subdomain = '', array $aliases = [], ?FillSettings $fillSettings = null)
+    public function __construct(string $name, string $subdomain = '', array $aliases = [], ?FillSettings $fillSettings = null)
     {
+      $this->name = $name;
       $this->primarySubdomain = $subdomain;
       $this->subdomainAliases = $aliases;
       $this->fillSettings    = $fillSettings;
     }
 
     /**
-     * Proxies to the fillset's internal method.
+     * Set the value of Name
+     *
+     * @param string $name
+     *
+     * @return self
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get the value of Name
      *
      * @return string
      */
-    public function getKey(): string
+    public function getName(): string
     {
-      return $this->fillSettings->getKey();
+        return $this->name;
     }
 
     /**
@@ -42,7 +61,7 @@ class Subdomain
      *
      * @return self
      */
-    public function setPrimarySubdomain($primarySubdomain)
+    public function setPrimarySubdomain($primarySubdomain): self
     {
         $this->primarySubdomain = $primarySubdomain;
         return $this;
@@ -65,7 +84,7 @@ class Subdomain
      *
      * @return self
      */
-    public function setSubdomainAliases($subdomainAliases)
+    public function setSubdomainAliases($subdomainAliases): self
     {
         $this->subdomainAliases = $subdomainAliases;
         return $this;
@@ -98,7 +117,7 @@ class Subdomain
      *
      * @return self
      */
-    public function setFillSettings($fillSettings)
+    public function setFillSettings($fillSettings): self
     {
         $this->fillSettings = $fillSettings;
         return $this;
@@ -112,6 +131,16 @@ class Subdomain
     public function getFillSettings()
     {
         return $this->fillSettings;
+    }
+
+    /**
+     * Proxies to the fillset's internal method.
+     *
+     * @return string
+     */
+    public function getKey(): string
+    {
+      return $this->fillSettings->getKey();
     }
 
     /**

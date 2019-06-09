@@ -18,19 +18,15 @@ class FillSettings
     protected $key;
   /** @var string */
     protected $folder;
-  /** @var string */
-    protected $name;
 
   /**
    * @param string      $key      The Image Set's app key.
-   * @param string      $name     The Image Set's readable name.
    * @param string|null $folder   The Image Set's folder, if different than key. Optional.
    * @param array|null  $supports The array of supports options. Optional.
    */
-    public function __construct(string $key, string $name, ?string $folder = null, ?array $supports = [])
+    public function __construct(string $key, ?string $folder = null, ?array $supports = [])
     {
         $this->key = $key;
-        $this->name = $name;
         $this->folder = $folder ?? $key;
         if (count($supports)) {
             foreach ($supports as $support => $value) {
