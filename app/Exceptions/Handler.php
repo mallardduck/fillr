@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
-use App\Http\SizeException;
+use App\Exceptions\SizeException;
 use App\Services\FillService\ServerException;
 use App\Services\FillService\UnsupportedType;
 use Illuminate\Validation\ValidationException;

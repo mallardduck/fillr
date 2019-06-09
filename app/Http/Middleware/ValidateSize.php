@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Http\SizeException;
 use Illuminate\Http\Request;
+use App\Exceptions\SizeException;
 
 class ValidateSize
 {
