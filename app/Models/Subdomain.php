@@ -134,4 +134,42 @@ class Subdomain
     {
         return $this->fillSettings->getKey();
     }
+
+    /**
+     * Returns the canonical hostname.
+     *
+     * @return string
+     */
+    public function getCanonicalHost(): string
+    {
+        $baseHttpHost = explode('.', app('request')->getHttpHost());
+        $baseHttpHost[0] = $this->getIndex();
+        return implode('.', $baseHttpHost);
+    }
+
+    /**
+     * Gets the scheme and HTTP host.
+     *
+     * If the URL was called with basic authentication, the user
+     * and the password are not added to the generated string.
+     *
+     * @return string The scheme and HTTP host
+     */
+    public function getCanonicalSchemeAndHost(): string
+    {
+        return app('request')->getScheme().'://'.$this->getCanonicalHost();
+    }
+
+    /**
+     * Generates a normalized URI for the given path.
+     *
+     * @param string $path A path to use instead of the current one
+     *
+     * @return string The normalized URI for the path
+     */
+    public function getUriForPath(string $path = '/'): string
+    {
+        $path = ltrim($path, '/');
+        return $this->getCanonicalSchemeAndHost() . '/' . $path;
+    }
 }

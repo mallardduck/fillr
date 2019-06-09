@@ -5,6 +5,8 @@
     <title>{{ $fillSet->getName() }} by LucidInternets</title>
     <meta name="description" content="Sizable, dynamic placeholder images featuring Bill Murray, with additional variations for grayscale">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="{{ $subdomain->getUriForPath('/') }}" />
+
 
     <style>
       html, body {
@@ -64,23 +66,23 @@
               <p>This is my body content.</p>
           @show
           <div class="well">
-            <p>Calm: <a href="/200/300" target="_blank">{{ url('/200/300') }}</a></p>
-            <p>Gray: <a href="/g/200/300" target="_blank">{{ url('/g/200/300') }}</a></p>
+            <p>Calm: <a href="{{ $subdomain->getUriForPath('/200/300') }}" target="_blank">{{ $subdomain->getUriForPath('/200/300') }}</a></p>
+            <p>Gray: <a href="{{ $subdomain->getUriForPath('/g/200/300') }}" target="_blank">{{ $subdomain->getUriForPath('/g/200/300') }}</a></p>
           </div>
         </div>
-        <img src="/300/200" width=300 height=200 />
-        <img src="/140/200" width=140 height=200 />
+        <img src="{{ $subdomain->getUriForPath('/300/200') }}" width=300 height=200 />
+        <img src="{{ $subdomain->getUriForPath('/140/200') }}" width=140 height=200 />
       </div>
       <div class="row">
-        <img src="/460/300" width=460 height=300 />
-        <img src="/g/155/300" width=155 height=300 />
+        <img src="{{ $subdomain->getUriForPath('/460/300') }}" width=460 height=300 />
+        <img src="{{ $subdomain->getUriForPath('/g/155/300') }}" width=155 height=300 />
         <div class="column">
           <div class="row">
-            <img src="/140/100" width=140 height=100 />
-            <img src="/g/140/100" width=140 height=100 />
+            <img src="{{ $subdomain->getUriForPath('/140/100') }}" width=140 height=100 />
+            <img src="{{ $subdomain->getUriForPath('/g/140/100') }}" width=140 height=100 />
           </div>
           <div class="row">
-            <img src="/284/196" />
+            <img src="{{ $subdomain->getUriForPath('/284/196') }}" />
           </div>
         </div>
       </div>
