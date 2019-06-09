@@ -69,9 +69,9 @@ class Handler extends ExceptionHandler
                 $this->view->make(
                     'error',
                     [
-                    'title' => 'Bad Request',
-                    'fillSet' => app()->subdomain,
-                    'message' => $exception->getMessage(),
+                      'title'     => 'Bad Request',
+                      'subdomain' => $request->subdomain,
+                      'message'   => $exception->getMessage(),
                     ]
                 ),
                 400
@@ -81,9 +81,9 @@ class Handler extends ExceptionHandler
                 $this->view->make(
                     'error',
                     [
-                    'title' => 'Server Error',
-                    'fillSet' => app()->subdomain,
-                    'message' => "There was an error on the server. Potentially you can try again in a few minutes and it may work. If it doesn't then it's likely it won't start working.",
+                      'title'     => 'Server Error',
+                      'subdomain' => $request->subdomain,
+                      'message'   => "There was an error on the server. Potentially you can try again in a few minutes and it may work. If it doesn't then it's likely it won't start working.",
                     ]
                 ),
                 500
@@ -94,10 +94,10 @@ class Handler extends ExceptionHandler
                 $this->view->make(
                     'error',
                     [
-                    'title' => 'Bad Request',
-                    'fillSet' => app()->subdomain,
-                    'message' => $exception->getMessage() . ' Redirecting...',
-                    'refresh' => url($base_size),
+                      'title'     => 'Bad Request',
+                      'subdomain' => $request->subdomain,
+                      'message'   => $exception->getMessage() . ' Redirecting...',
+                      'refresh'   => url($base_size),
                     ]
                 ),
                 400
