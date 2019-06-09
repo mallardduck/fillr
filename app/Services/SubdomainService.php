@@ -67,4 +67,16 @@ class SubdomainService
           return static::$subdomains->getByKey($type);
       }
 
+      /**
+       * A method used to find a subdomain from a given string.
+       *
+       * @param  string $inputSubdomain
+       * @return Subdomain
+       */
+      public function findSubdomain(string $inputSubdomain): Subdomain
+      {
+          return static::$subdomains->filter(function ($value, $key) use ($inputSubdomain) {
+              return $value->subdomainIsMatch($inputSubdomain);
+          })->first();
+      }
 }

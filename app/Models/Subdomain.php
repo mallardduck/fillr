@@ -82,6 +82,16 @@ class Subdomain
     }
 
     /**
+     * Get the value of Primary Subdomain
+     *
+     * @return mixed
+     */
+    public function getAllSubdomains()
+    {
+        return collect($this->subdomainAliases)->push($this->primarySubdomain);
+    }
+
+    /**
      * Set the value of Fill Set
      *
      * @param mixed $fillSettings
@@ -102,5 +112,16 @@ class Subdomain
     public function getFillSettings()
     {
         return $this->fillSettings;
+    }
+
+    /**
+     * Provides a check to determine if a string matches this subdomain.
+     *
+     * @param  string $subdomain An arbitrary subdomain string.
+     * @return bool              The bool value indicating if this Subdomain is a fit.
+     */
+    public function subdomainIsMatch(string $subdomain): bool
+    {
+        return $this->getAllSubdomains()->search($subdomain, true) !== false;
     }
 }
