@@ -14,6 +14,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+      //
+    }
+
+    /**
+     * Boot the authentication services for the application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
       Collection::macro('getByKey', function ($searchKey) {
           return $this->first(function ($value, $key) use ($searchKey) {
               return $value->getKey() === $searchKey;
