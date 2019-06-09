@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="theme-color" content="#ffffff">
-    <title>{{ $title ?? 'Error' }} | {{ $subdomain->getName() ??  'Filler Images' }} by LucidInternets</title>
+    <title>{{ $title ?? 'Error' }} | {{ isset($subdomain) ? $subdomain->getName() :  'Filler Images' }} by LucidInternets</title>
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Ruh-roh, Gang! Looks like an error occured.">

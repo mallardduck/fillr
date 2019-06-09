@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Subdomain;
 use App\Models\FillSettings;
 use Illuminate\Support\Collection;
+use App\Exceptions\SubdomainException;
 
 class SubdomainService
 {
@@ -78,9 +79,13 @@ class SubdomainService
        */
       public function findSubdomain(string $inputSubdomain): Subdomain
       {
-          return static::$subdomains->filter(function ($value, $key) use ($inputSubdomain) {
+          $subdomain = static::$subdomains->filter(function ($value, $key) use ($inputSubdomain) {
               return $value->subdomainIsMatch($inputSubdomain);
           })->first();
+          if (null === $subdomain) {
+            throw new SubdomainException("Invalid subdomain used for request.");
+          }
+          return $subdomain;
       }
 
       /**

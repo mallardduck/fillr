@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Exceptions\SizeException;
+use App\Exceptions\SubdomainException;
 use App\Services\FillService\ServerException;
 use App\Services\FillService\UnsupportedType;
 use Illuminate\Validation\ValidationException;
@@ -64,7 +65,18 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof SizeException) {
+        if ($exception instanceof SubdomainException) {
+            return (new Response(
+                $this->view->make(
+                    'error',
+                    [
+                      'title'     => 'Bad Request',
+                      'message'   => $exception->getMessage(),
+                    ]
+                ),
+                400
+            ));
+        } elseif ($exception instanceof SizeException) {
             return (new Response(
                 $this->view->make(
                     'error',
