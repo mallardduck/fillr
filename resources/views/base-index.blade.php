@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{ $fillSet->getName() }} by LucidInternets</title>
+    <title>{{ $subdomain->getName() }} by LucidInternets</title>
     <meta name="description" content="Sizable, dynamic placeholder images featuring Bill Murray, with additional variations for grayscale">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="{{ $subdomain->getUriForPath('/') }}" />
@@ -61,7 +61,7 @@
     <main class="container">
       <div class="row">
         <div class="blurb">
-          <h1>{{ $fillSet->getName() }}</h1>
+          <h1>{{ $subdomain->getName() }}</h1>
           @section('content')
               <p>This is my body content.</p>
           @show
