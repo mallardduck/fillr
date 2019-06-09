@@ -90,7 +90,15 @@
     <footer class="container">
       <div class="row">
         <span class="by-line">By <a href="https://github.com/mallardduck" target="_blank">mallardduck</a>. | Proudly inspired by: <a href="https://twitter.com/davecowart" target="_blank">@davecowart</a> | </span>
-        <span>Check out the sister sites: [Add links later]</span>
+        <span>
+          Check out the sister sites:
+          @foreach ($sisterSites as $site)
+            @php
+              list($name, $url) = $site;
+            @endphp
+            <a href="{{ $url }}">{{ $name }}</a>
+          @endforeach
+        </span>
       </div>
     </footer>
   </body>

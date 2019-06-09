@@ -82,4 +82,19 @@ class SubdomainService
               return $value->subdomainIsMatch($inputSubdomain);
           })->first();
       }
+
+      /**
+       * A method used to find a sister subdomains from a given string.
+       *
+       * @param  string $inputSubdomain
+       * @return Collection
+       */
+      public function findSisterSites(string $inputSubdomain): Collection
+      {
+          return static::$subdomains->filter(function ($value, $key) use ($inputSubdomain) {
+              return !$value->subdomainIsMatch($inputSubdomain);
+          })->map(function ($value, $key) {
+              return [$value->getName(), $value->getCanonicalSchemeAndHost('/')];
+          });
+      }
 }
