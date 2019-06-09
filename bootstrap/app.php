@@ -108,9 +108,9 @@ $app->singleton('filesystem', function ($app) {
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    App\Http\Middleware\CanonicalHeader::class
+]);
 
 $app->routeMiddleware([
     'size' => App\Http\Middleware\ValidateSize::class,
