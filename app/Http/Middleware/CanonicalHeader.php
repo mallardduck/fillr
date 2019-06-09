@@ -20,14 +20,16 @@ class CanonicalHeader
     {
         $response = $next($request);
 
-        // Build canonical URI
-        $canonicalUrl = $request->subdomain->getUriForPath($request->getPathInfo());
-        $headerValue = '<' . $canonicalUrl . '>; rel="canonical"';
-        // Set header into response - based on response type
-        if ($response instanceof Response) {
-          $response->header('Link', $headerValue);
-        } elseif ($response instanceof BinaryFileResponse) {
-          $response->headers->set('Link', $headerValue);
+        if ((int) ((string) $response->getStatusCode())[0] === 2) {
+            // Build canonical URI
+            $canonicalUrl = $request->subdomain->getUriForPath($request->getPathInfo());
+            $headerValue = '<' . $canonicalUrl . '>; rel="canonical"';
+            // Set header into response - based on response type
+            if ($response instanceof Response) {
+              $response->header('Link', $headerValue);
+            } elseif ($response instanceof BinaryFileResponse) {
+              $response->headers->set('Link', $headerValue);
+            }
         }
 
         return $response;
